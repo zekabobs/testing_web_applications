@@ -4,7 +4,7 @@ from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from webdriver_manager.chrome import ChromeDriverManager
 
-from selenium.webdriver import Firefox, FirefoxProfile
+from selenium.webdriver import Firefox, FirefoxProfile, FirefoxOptions
 from selenium.webdriver.firefox.service import Service as FirefoxService
 
 from selenium.webdriver import Edge, EdgeOptions
@@ -17,7 +17,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 def pytest_addoption(parser):
     parser.addoption(
         '--browser', action='store',
-        default='chrome',
+        default='firefox',
         help='firefox, edge, chrome',
         choices=('firefox', 'edge', 'chrome')
     )
@@ -37,6 +37,7 @@ def get_driver(driver_name: str, **kwargs):
     if driver_name == 'firefox':
         fp = FirefoxProfile()
         fp.set_preference('intl.accept_languages', kwargs.get('language'))
+        fp.set_preference('page_load_strategy', 'eager')
         driver = Firefox(
             firefox_profile=fp, service=FirefoxService(executable_path=GeckoDriverManager().install())
         )
@@ -60,7 +61,6 @@ def get_driver(driver_name: str, **kwargs):
 
 @pytest.fixture(scope='class', name='driver')
 def browser(request):
-
     driver_name = request.config.getoption('--browser')
     language = request.config.getoption('--language')
     driver = get_driver(driver_name, language=language)

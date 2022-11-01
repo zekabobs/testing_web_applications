@@ -26,9 +26,16 @@ class BasePage:
         login_link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
         login_link.click()
 
-    def is_element_present(self, rule, pattern: str) -> bool:
+    def should_be_cart_link(self):
+        assert self.is_element_present(*BasePageLocators.CART_LINK), 'Cart link is not present'
+
+    def go_to_cart_page(self):
+        login_link = self.browser.find_element(*BasePageLocators.CART_LINK)
+        login_link.click()
+
+    def is_element_present(self, rule, pattern: str, timeout: int = 5) -> bool:
         try:
-            self.browser.find_element(rule, pattern)
+            WebDriverWait(self.browser, timeout).until(EC.presence_of_element_located((rule, pattern)))
 
         except NoSuchElementException:
             return False

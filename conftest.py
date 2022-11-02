@@ -59,7 +59,7 @@ def get_driver(driver_name: str, **kwargs):
     return driver
 
 
-@pytest.fixture(scope='class', name='driver')
+@pytest.fixture(scope='function', name='driver')
 def browser(request):
     driver_name = request.config.getoption('--browser')
     language = request.config.getoption('--language')

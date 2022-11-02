@@ -19,6 +19,10 @@ class BasePage:
     def open(self):
         self.browser.get(self.url)
 
+    def should_be_authorized_user(self):
+        assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
+                                                                     " probably unauthorised user"
+
     def should_be_login_link(self):
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK), 'Login link is not present'
 
@@ -33,7 +37,7 @@ class BasePage:
         login_link = self.browser.find_element(*BasePageLocators.CART_LINK)
         login_link.click()
 
-    def is_element_present(self, rule, pattern: str, timeout: int = 5) -> bool:
+    def is_element_present(self, rule, pattern: str, timeout: int = 10) -> bool:
         try:
             WebDriverWait(self.browser, timeout).until(EC.presence_of_element_located((rule, pattern)))
 
@@ -42,7 +46,7 @@ class BasePage:
 
         return True
 
-    def is_not_element_present(self, rule, pattern: str, timeout: int = 5) -> bool:
+    def is_not_element_present(self, rule, pattern: str, timeout: int = 10) -> bool:
         try:
             WebDriverWait(self.browser, timeout).until(EC.presence_of_element_located((rule, pattern)))
 

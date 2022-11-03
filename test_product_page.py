@@ -19,6 +19,7 @@ class TestUserAddToBasketFromProductPage:
     def test_user_cant_see_success_message(self, driver):
         product_page = ProductPage(driver, self.link)
         product_page.open()
+        product_page.should_be_add_to_cart_button()
         product_page.add_to_cart()
         product_page.should_be_message_success_adding_product()
         product_page.should_be_correct_coast()
@@ -26,6 +27,7 @@ class TestUserAddToBasketFromProductPage:
     def test_user_can_add_product_to_basket(self, driver):
         product_page = ProductPage(driver, self.link)
         product_page.open()
+        product_page.should_be_add_to_cart_button()
         product_page.add_to_cart()
 
 
@@ -34,6 +36,7 @@ def test_user_can_add_product_to_basket(driver):
     link = 'http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/'
     product_page = ProductPage(driver, link)
     product_page.open()
+    product_page.should_be_add_to_cart_button()
     product_page.add_to_cart()
 
 
